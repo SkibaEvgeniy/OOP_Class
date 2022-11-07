@@ -8,15 +8,51 @@ class Student:
         self.grades = {}
  
     def add_courses(self, course_name):
-        self.finished_courses.append(course_name)   
- 
+        self.finished_courses.append(course_name)  
+
+    def rate_hw(self, lecturer, course, grade):
+        if isinstance(lecturer, Lecturer) and course in self.courses_in_progress and course in lecturer.courses_attached:
+            if course in lecturer.grades:
+                lecturer.grades[course] += [grade]
+            else:
+                lecturer.grades[course] = [grade]
+        else:
+            return 'Ошибка'   
+
+
+
+    
+    def __str__(self):
+        progress = ', '.join(self.courses_in_progress)
+        finish = ', '.join(self.finished_courses)
+        output = f'Имя: {self.name }\nФамилия: {self.surname}\nКурсы в процессе обучения: {progress}\nЗавершенные курсы: {finish}'
+        return(output) 
      
+# \nСредняя оценка за домашние задания: {self._average_assessment()}
+
 class Mentor:
     def __init__(self, name, surname):
         self.name = name
         self.surname = surname
         self.courses_attached = []
         
+    
+
+class Lecturer(Mentor):
+    def __init__(self, name, surname):
+        super().__init__(name, surname)
+        self.grades = {}
+
+
+
+    def __str__(self):
+        output = f'Имя: {self.name }\nФамилия: {self.surname}\nСредняя оценка за лекции: {self._average_assessment()}'
+        return(output)    
+
+
+        
+
+class Reviewer(Mentor):
     def rate_hw(self, student, course, grade):
         if isinstance(student, Student) and course in self.courses_attached and course in student.courses_in_progress:
             if course in student.grades:
@@ -25,15 +61,116 @@ class Mentor:
                 student.grades[course] = [grade]
         else:
             return 'Ошибка'
+
+    def __str__(self):
+        output = f'Имя: {self.name}\nФамилия: {self.surname}'
+        return(output)        
+
+Jackson = Student('Harris', 'Jackson', 'm')
+Jackson.courses_in_progress += ['Python', 'Git']
+Jackson.finished_courses += ['Введение в программирование']
+Hohnson = Student('Bryce', 'Hohnson', 'm')
+Hohnson.courses_in_progress += ['Python', 'Git']
+Hohnson.finished_courses += ['Введение в программирование']
+Allen = Student('Peter', 'Allen', 'm')
+Allen.courses_in_progress += ['Python', 'Git']
+Allen.finished_courses += ['Введение в программирование']
+# print(Jackson.courses_in_progress)
+# print(Jackson)
+
+
+
+Wilson = Reviewer('Kingsley', 'Wilson')
+Wilson.courses_attached = ['Python']
+Wilson.rate_hw(Jackson, 'Python', 7)
+Wilson.rate_hw(Jackson, 'Python', 10)
+Wilson.rate_hw(Jackson, 'Python', 8)
+Wilson.rate_hw(Hohnson, 'Python', 6)
+Wilson.rate_hw(Hohnson, 'Python', 7)
+Wilson.rate_hw(Hohnson, 'Python', 5)
+Wilson.rate_hw(Allen, 'Python', 9)
+Wilson.rate_hw(Allen, 'Python', 10)
+Wilson.rate_hw(Allen, 'Python', 9)
+
+Martin = Reviewer('Robin', 'Martin')
+Martin.courses_attached = ['Git']
+Martin.rate_hw(Jackson, 'Git', 9)
+Martin.rate_hw(Jackson, 'Git', 10)
+Martin.rate_hw(Jackson, 'Git', 8)
+Martin.rate_hw(Hohnson, 'Git', 7)
+Martin.rate_hw(Hohnson, 'Git', 8)
+Martin.rate_hw(Hohnson, 'Git', 5)
+Martin.rate_hw(Allen, 'Git', 9)
+Martin.rate_hw(Allen, 'Git', 10)
+Martin.rate_hw(Allen, 'Git', 10)
+
+
+
+Rodriguez = Lecturer('Cooper', 'Rodriguez')
+Rodriguez.courses_attached += ['Python']
+Lewis = Lecturer('Westin', 'Lewis')
+Lewis.courses_attached += ['Python']
+Garcia = Lecturer('Tate', 'Garcia')
+Garcia.courses_attached += ['Git']
+
+Jackson.rate_hw(Rodriguez, 'Python', 9)
+Jackson.rate_hw(Rodriguez, 'Python', 8)
+Hohnson.rate_hw(Rodriguez, 'Python', 7)
+Hohnson.rate_hw(Rodriguez, 'Python', 6)
+Allen.rate_hw(Rodriguez, 'Python', 10)
+Allen.rate_hw(Rodriguez, 'Python', 10)
+Jackson.rate_hw(Lewis, 'Python', 8)
+Jackson.rate_hw(Lewis, 'Python', 9)
+Hohnson.rate_hw(Lewis, 'Python', 6)
+Hohnson.rate_hw(Lewis, 'Python', 5)
+Allen.rate_hw(Lewis, 'Python', 10)
+Allen.rate_hw(Lewis, 'Python', 9)
+Jackson.rate_hw(Garcia, 'Git', 8)
+Jackson.rate_hw(Garcia, 'Git', 9)
+Hohnson.rate_hw(Garcia, 'Git', 8)
+Hohnson.rate_hw(Garcia, 'Git', 9)
+Allen.rate_hw(Garcia, 'Git', 10)
+Allen.rate_hw(Garcia, 'Git', 10)
+
+print(Rodriguez)
+
+# print(Jackson)
+# print(Jackson.grades)
+
+# print(Jackson._average_assessment())
+
+
+
+
+
+
+
+# Taker = Lecturer('Djon', 'Taker')
+# Taker.courses_attached += ['Python']
+# Taker.courses_attached += ['Git']
+
+# best_student = Student('Some', 'Buddy', 'm')
+# best_student.courses_in_progress += ['Python']
+# best_student.courses_in_progress += ['Git']
  
-best_student = Student('Ruoy', 'Eman', 'your_gender')
-best_student.courses_in_progress += ['Python']
+# best_student.rate_hw(Taker, 'Python', 5)
+# best_student.rate_hw(Taker, 'Python', 10)
+# best_student.rate_hw(Taker, 'Python', 10)
+# best_student.rate_hw(Taker, 'Git', 6)
  
-cool_mentor = Mentor('Some', 'Buddy')
-cool_mentor.courses_attached += ['Python']
+# print(Taker.grades)
+# print(best_student.courses_in_progress)
+
+
+# best_student = Student('Ruoy', 'Eman', 'your_gender')
+# best_student.courses_in_progress += ['Python']
  
-cool_mentor.rate_hw(best_student, 'Python', 10)
-cool_mentor.rate_hw(best_student, 'Python', 10)
-cool_mentor.rate_hw(best_student, 'Python', 10)
+# cool_reviewer = Reviewer('Some', 'Buddy')
+# cool_reviewer.courses_attached += ['Python']
  
-print(best_student.grades)
+# cool_reviewer.rate_hw(best_student, 'Python', 10)
+# cool_reviewer.rate_hw(best_student, 'Python', 10)
+# cool_reviewer.rate_hw(best_student, 'Python', 10)
+ 
+# print(best_student.grades)
+# print(best_student)
