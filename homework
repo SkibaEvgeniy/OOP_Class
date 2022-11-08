@@ -176,7 +176,8 @@ def average_assessment_st(students_list, course):
             for grades in student.grades.get(course):
                 sum_.append(grades)
     medium = sum(sum_) / len(sum_)
-    return print(round(medium, 2))
+    summary = round(medium, 2)
+    return print(f'Средняя оценка за домашние задания по всем студентам в рамках курса {course}: {summary}')
 
 def average_assessment_lec(lecturer_list, course):
     sum_ = []
@@ -185,7 +186,9 @@ def average_assessment_lec(lecturer_list, course):
             for grades in lecturer.grades.get(course):
                 sum_.append(grades)
     medium = sum(sum_) / len(sum_)
-    return print(round(medium, 2))
+    summary = round(medium, 2)
+    return print(f'Средняя оценка за лекции всех лекторов в рамках курса {course}: {summary}')
 
-average_assessment_st(Student.students_list, 'Git')  
+average_assessment_st(Student.students_list, 'Git') 
+print() 
 average_assessment_lec(Lecturer.lecturer_list, 'Git')
