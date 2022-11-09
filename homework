@@ -39,6 +39,11 @@ class Student:
         else:
             return f'У {self.surname} и у {another.surname} средний бал равен.'
 
+    def __lt__(self, other):
+        if not isinstance(other, Student):
+            return
+        return self._average_assessment() < other._average_assessment()    
+
     def __str__(self):
         progress = ', '.join(self.courses_in_progress)
         finish = ', '.join(self.finished_courses)
@@ -76,6 +81,11 @@ class Lecturer(Mentor):
             return f'У {self.surname} средний бал меньше, чем у {another.surname}.'
         else:
             return f'У {self.surname} и у {another.surname} средний бал равен.'
+
+    def __lt__(self, other):
+        if not isinstance(other, Lecturer):
+            return
+        return self._average_assessment() < other._average_assessment()    
 
     def __str__(self):
         output = f'Имя: {self.name }\nФамилия: {self.surname}\nСредняя оценка за лекции: {self._average_assessment()}'
@@ -167,6 +177,10 @@ print()
 print(Rodriguez.beat_up(Lewis))
 print()
 print(Hohnson.beat_up(Jackson))
+print()
+print(Jackson.__lt__(Hohnson))
+print()
+print(Lewis.__lt__(Rodriguez))
 print()
 
 def average_assessment_st(students_list, course):
